@@ -5,6 +5,17 @@
   background-position: center;
 }
 
+.me-auto {
+  width: 120px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.menu {
+  text-decoration: none;
+  color: azure;
+}
+
 .App {
   text-align: center;
 }
@@ -43,4 +54,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.paddingNavbar {
+  margin-bottom: 20px;
 }

@@ -1,48 +1,71 @@
+// eslint-disable-next-line
+
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Container, Nav, Navbar, Row, Col } from 'react-bootstrap'
 import { useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import 상품데이터 from './data'
+import { Routes, Route, Link, useNavigate, Outlet, useLocation } from 'react-router-dom'
+import Detail from './pages/Detail';
 
 function App() {
 
   let [shoes] = useState(상품데이터)
-  // let [shoesImg] = useState([
-  //   "https://codingapple1.github.io/shop/shoes1.jpg",
-  //   "https://codingapple1.github.io/shop/shoes2.jpg",
-  //   "https://codingapple1.github.io/shop/shoes3.jpg",
-  // ])
+  let navigate = useNavigate()
+  const { pathname } = useLocation()
 
   return (
     <div className="App">
-      <Navbar bg="dark" data-bs-theme="dark">
+
+      <Navbar bg="dark" data-bs-theme="dark"
+        className={pathname === "/" ? null : 'paddingNavbar'}>
         <Container>
-          <Navbar.Brand href="#home">ReactMall</Navbar.Brand>
+          <Navbar.Brand href="/">ReactMall</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Cart</Nav.Link>
+            <Link to="/" className='menu'>Home</Link>
+            <Link to="/detail" className='menu'>Detail</Link>
           </Nav>
           <OffCanvasExample placement={'end'} name={'세부메뉴'} />
         </Container>
       </Navbar>
 
-      <div className='main-bg'></div>
-
-      <Row>
-        {
-          shoes.map(function (key, index) {
-            return (
-              <ShoeLists idx={index} shoesInfo={key} />
-            )
-          })
-        }
-      </Row>
+      <Routes>
+        <Route path="/" element={
+          <>
+            <div className='main-bg'></div>
+            <Row>
+              {
+                shoes.map(function (key, index) {
+                  return (
+                    <ShoeLists idx={index} shoesInfo={key} />
+                  )
+                })
+              }
+            </Row>
+          </>
+        } />
+        <Route path="/detail" element={<Detail />} />
+        <Route path="/event" element={<Event />}>
+          <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>} />
+          <Route path="two" element={<div>생일기념 쿠폰받기</div>} />
+        </Route>
+        <Route path="*" element={<div>없는 페이지입니다</div>} />
+      </Routes>
     </div>
   );
 }
 
 export default App;
+
+function Event() {
+  return (
+    <>
+      <h4>오늘의 이벤트</h4>
+      <Outlet />
+    </>
+  )
+}
 
 function ShoeLists(props) {
   return (
