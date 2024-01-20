@@ -11,11 +11,8 @@ import Detail from './pages/Detail';
 
 function App() {
 
-  let [shoes] = useState(상품데이터)
-  let navigate = useNavigate()
+  let [shoes, setShoes] = useState(상품데이터)
   const { pathname } = useLocation()
-
-  console.log(pathname)
 
   return (
     <div className="App">
@@ -45,6 +42,12 @@ function App() {
                 })
               }
             </Row>
+            <button onClick={() => {
+              let newShoes = [...shoes]
+              newShoes.sort((a, b) => a.title.localeCompare(b.title))
+              setShoes(newShoes)
+            }}>가나다순 정렬
+            </button>
           </>
         } />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
@@ -70,9 +73,11 @@ function Event() {
 }
 
 function ShoeLists(props) {
+  let navigate = useNavigate()
   return (
-    <Col sm>
-      <img src={'https://codingapple1.github.io/shop/shoes' + (props.idx + 1) + '.jpg'} width='80%' />
+    <Col sm onClick={() => { navigate('/detail/' + props.idx) }} style={{ cursor: "pointer" }}>
+      <img src={'https://codingapple1.github.io/shop/shoes' + (props.shoesInfo.id + 1) + '.jpg'} width='80%'
+        className='shoeImgs' />
       <h4>{props.shoesInfo.title}</h4>
       <p>{props.shoesInfo.content}</p>
       <p>{props.shoesInfo.price}</p>

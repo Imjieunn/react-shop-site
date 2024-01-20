@@ -59,3 +59,11 @@
 .paddingNavbar {
   margin-bottom: 20px;
 }
+
+.shoeImgs {
+  filter: brightness(1);
+}
+
+.shoeImgs:hover {
+  filter: brightness(0.5);
+}
