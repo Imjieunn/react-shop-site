@@ -35,9 +35,9 @@ function App() {
             <div className='main-bg'></div>
             <Row>
               {
-                shoes.map(function (key, index) {
+                shoes.map(function (shoe, index) {
                   return (
-                    <ShoeLists idx={index} shoesInfo={key} />
+                    <ShoeLists key={shoe.id} idx={index} shoesInfo={shoe} />
                   )
                 })
               }
@@ -76,8 +76,7 @@ function ShoeLists(props) {
   let navigate = useNavigate()
   return (
     <Col sm onClick={() => { navigate('/detail/' + props.idx) }} style={{ cursor: "pointer" }}>
-      <img src={'https://codingapple1.github.io/shop/shoes' + (props.shoesInfo.id + 1) + '.jpg'} width='80%'
-        className='shoeImgs' />
+      <img src={'https://codingapple1.github.io/shop/shoes' + (props.shoesInfo.id + 1) + '.jpg'} width='80%' />
       <h4>{props.shoesInfo.title}</h4>
       <p>{props.shoesInfo.content}</p>
       <p>{props.shoesInfo.price}</p>
