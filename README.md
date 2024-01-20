@@ -8,3 +8,5 @@
 - Link, useNavigate
 - nested-routes (2중 라우트), Outlet
 - useLocation : 현재 주소 나타내는 함수
+- :url 파라미터 & useParams() : 무한의 상세페이지 생성
+4. styled-components 적용
