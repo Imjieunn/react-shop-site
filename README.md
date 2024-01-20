@@ -10,3 +10,4 @@
 - useLocation : 현재 주소 나타내는 함수
 - :url 파라미터 & useParams() : 무한의 상세페이지 생성
 4. styled-components 적용
+5. useEffect 적용 : React의 LifeCycle 이해, useEffect 안에 있는 코드는 html 렌더링 후에 동작한다!
