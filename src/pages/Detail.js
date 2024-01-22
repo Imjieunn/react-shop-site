@@ -16,10 +16,18 @@ let Box = styled.div`
     background: grey;
     padding: 20px;
 `
+let Order = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+`
 
 function Detail(props) {
 
     let [count, setCount] = useState(0)
+    let [수량, 변한수량] = useState("")
+    let [isnumber, setIsnumber] = useState(false)
     let { id } = useParams();
     let len = (props.shoes).length
     let num = (props.shoes).filter((value) => value.title == props.shoes[id].title)[0].id
@@ -33,6 +41,24 @@ function Detail(props) {
             clearTimeout(a)
         }
     })
+
+    useEffect(() => {
+        console.log("유효성검사 시작!")
+        if (isNaN(수량) == true) {
+            setIsnumber(true)
+        } else {
+            setIsnumber(false)
+        }
+    }, [수량])
+
+    // const 숫자인지판별 = (e) => {
+    //     수량 = e.target.value
+    //     if (isNaN(수량) === true) {
+    //         setIsnumber(true)
+    //     } else {
+    //         setIsnumber(false)
+    //     }
+    // }
 
     return (
         <div className="container">
@@ -62,6 +88,17 @@ function Detail(props) {
                             <h4 className="pt-5">{props.shoes[id].title}</h4>
                             <p>{props.shoes[id].content}</p>
                             <p>{props.shoes[id].price}</p>
+                            <Order>
+                                <p>구매수량
+                                    <input
+                                        style={{ marginLeft: '10px' }}
+                                        onChange={(e) => 변한수량(e.target.value)}
+                                    />
+                                </p>
+                                {/* onChange={숫자인지판별} */}
+                                {isnumber ? <숫자유효성검사 /> : null}
+                            </Order>
+
                             <button className="btn btn-danger">주문하기</button>
                         </div>
                     </div>
@@ -69,8 +106,18 @@ function Detail(props) {
                     <div>해당 페이지는 존재하지 않습니다.</div>
             }
 
+
         </div>
     )
 }
 
 export default Detail
+
+function 숫자유효성검사() {
+    return (
+        <div style={{
+            background: 'red', color: 'white', margin: 'auto', marginBottom: '10px'
+        }}>경고 : 숫자만 입력하세요
+        </div>
+    )
+}
