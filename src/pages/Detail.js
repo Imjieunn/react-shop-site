@@ -26,7 +26,12 @@ function Detail(props) {
     let [timer, setTimer] = useState(false)
 
     useEffect(() => {
-        setTimeout(() => { setTimer(true) }, 2000)
+        let a = setTimeout(() => { setTimer(true) }, 2000)
+        console.log(2)
+        return () => {
+            console.log(1)
+            clearTimeout(a)
+        }
     })
 
     return (
