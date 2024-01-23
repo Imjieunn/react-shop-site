@@ -3,11 +3,19 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Container, Nav, Navbar, Row, Col } from 'react-bootstrap'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import 상품데이터 from './data'
 import { Routes, Route, Link, useNavigate, Outlet, useLocation } from 'react-router-dom'
 import Detail from './pages/Detail';
+import axios from 'axios';
+import styled from 'styled-components';
+
+let ButtonArea = styled.div`
+  display: flex;
+  flex-direction : column;
+  width : auto;
+`
 
 function App() {
 
@@ -30,26 +38,7 @@ function App() {
       </Navbar>
 
       <Routes>
-        <Route path="/" element={
-          <>
-            <div className='main-bg'></div>
-            <Row>
-              {
-                shoes.map(function (shoe, index) {
-                  return (
-                    <ShoeLists key={shoe.id} idx={index} shoesInfo={shoe} />
-                  )
-                })
-              }
-            </Row>
-            <button onClick={() => {
-              let newShoes = [...shoes]
-              newShoes.sort((a, b) => a.title.localeCompare(b.title))
-              setShoes(newShoes)
-            }}>가나다순 정렬
-            </button>
-          </>
-        } />
+        <Route path="/" element={<MainPage shoes={shoes} setShoes={setShoes} />} />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
         <Route path="/event" element={<Event />}>
           <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>} />
@@ -57,11 +46,49 @@ function App() {
         </Route>
         <Route path="*" element={<div>없는 페이지입니다</div>} />
       </Routes>
+
     </div>
   );
 }
 
 export default App;
+
+function MainPage(props) {
+
+  return (
+    <>
+      <div className='main-bg'></div>
+      <Row style={{ display: 'inline-flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+        {
+          props.shoes.map(function (shoe, index) {
+            return (
+              <ShoeLists key={shoe.id} idx={index} shoesInfo={shoe} />
+            )
+          })
+        }
+      </Row>
+
+      < ButtonArea >
+        <button
+          onClick={() => {
+            let newShoes = [...props.shoes]
+            newShoes.sort((a, b) => a.title.localeCompare(b.title))
+            props.setShoes(newShoes)
+          }}>가나다순 정렬
+        </button>
+        <button onClick={() => {
+          axios.get('https://codingapple1.github.io/shop/data2.json')
+            .then((결과) => {
+              let copy = [...props.shoes, ...결과.data]
+              props.setShoes(copy)
+            })
+            .catch(() => { console.log('실패함 ㅅㄱ') })
+        }}>더보기</button>
+      </ButtonArea>
+
+    </>
+  )
+}
 
 function Event() {
   return (
