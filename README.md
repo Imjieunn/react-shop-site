@@ -13,3 +13,5 @@
 5. useEffect 적용 : React의 LifeCycle 이해, useEffect 안에 있는 코드는 html 렌더링 후에 동작한다!
 - useEffect( ( ) => { }, [ ]) <- useEffect 실행조건
 - useEffect내에 return 작성 가능 (useEffect 동작 전에 실행되도록)
+6. ajax 이용해서 서버와 통신
+- axios 이용 (GET/POST)
