@@ -14,6 +14,8 @@ import styled from 'styled-components';
 let ButtonArea = styled.div`
   display: flex;
   flex-direction : column;
+  justify-content : center;
+  align-content : center;
   width : auto;
 `
 
@@ -54,6 +56,30 @@ function App() {
 export default App;
 
 function MainPage(props) {
+  let page = 1
+  let [currentPage, setCurrentPage] = useState(1)
+  let [activeBtn, setActiveBtn] = useState(false)
+
+  const fetchShoeList = () => {
+    axios.get('https://codingapple1.github.io/shop/data' + (currentPage + 1) + '.json')
+      .then((결과) => {
+        let copy = [...props.shoes, ...결과.data]
+        props.setShoes(copy)
+      })
+      .catch(() => { console.log('실패함 ㅅㄱ') })
+  }
+
+  const handleShoeList = () => {
+    setCurrentPage(currentPage + 1)
+    if (currentPage > page) {
+      setActiveBtn(true)
+    }
+    if (activeBtn) {
+      alert('더이상 상품이 존재하지 않습니다!')
+    } else {
+      fetchShoeList()
+    }
+  }
 
   return (
     <>
@@ -69,21 +95,20 @@ function MainPage(props) {
       </Row>
 
       < ButtonArea >
-        <button
-          onClick={() => {
-            let newShoes = [...props.shoes]
-            newShoes.sort((a, b) => a.title.localeCompare(b.title))
-            props.setShoes(newShoes)
-          }}>가나다순 정렬
-        </button>
-        <button onClick={() => {
-          axios.get('https://codingapple1.github.io/shop/data2.json')
-            .then((결과) => {
-              let copy = [...props.shoes, ...결과.data]
-              props.setShoes(copy)
-            })
-            .catch(() => { console.log('실패함 ㅅㄱ') })
-        }}>더보기</button>
+        <div style={{ paddingBottom: '10px' }}>
+          <button onClick={handleShoeList}>더보기</button>
+          <button onClick={handleShoeList}>접기</button>
+        </div>
+
+        <div>
+          <button style={{ width: 'fit-content' }}
+            onClick={() => {
+              let newShoes = [...props.shoes]
+              newShoes.sort((a, b) => a.title.localeCompare(b.title))
+              props.setShoes(newShoes)
+            }}>가나다순 정렬
+          </button>
+        </div>
       </ButtonArea>
 
     </>
@@ -102,12 +127,18 @@ function Event() {
 function ShoeLists(props) {
   let navigate = useNavigate()
   return (
-    <Col sm onClick={() => { navigate('/detail/' + props.idx) }} style={{ cursor: "pointer" }}>
+    <Col sm={4} onClick={() => { navigate('/detail/' + props.idx) }} style={{ cursor: "pointer" }}>
       <img src={'https://codingapple1.github.io/shop/shoes' + (props.shoesInfo.id + 1) + '.jpg'} width='80%' />
       <h4>{props.shoesInfo.title}</h4>
       <p>{props.shoesInfo.content}</p>
       <p>{props.shoesInfo.price}</p>
     </Col>
+  )
+}
+
+function 더보기안내문() {
+  return (
+    <div>로딩중입니다.</div>
   )
 }
 
