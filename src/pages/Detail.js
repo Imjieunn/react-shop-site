@@ -80,38 +80,96 @@ function Detail(props) {
 
             {
                 id <= len ?
-                    <div className="row">
-                        <div className="col-md-6">
-                            <img src={'https://codingapple1.github.io/shop/shoes' + (num + 1) + '.jpg'} width="100%" />
-                        </div>
-                        <div className="col-md-6">
-                            <h4 className="pt-5">{props.shoes[id].title}</h4>
-                            <p>{props.shoes[id].content}</p>
-                            <p>{props.shoes[id].price}</p>
-                            <Order>
-                                <p>구매수량
-                                    <input
-                                        style={{ marginLeft: '10px' }}
-                                        onChange={(e) => 변한수량(e.target.value)}
-                                    />
-                                </p>
-                                {/* onChange={숫자인지판별} */}
-                                {isnumber ? <숫자유효성검사 /> : null}
-                            </Order>
-
-                            <button className="btn btn-danger">주문하기</button>
-                        </div>
-                    </div>
-                    :
-                    <div>해당 페이지는 존재하지 않습니다.</div>
+                    <신발구매정보 shoes={props.shoes} num={num} id={id} 변한수량={변한수량} isnumber={isnumber} />
+                    : <div>해당 페이지는 존재하지 않습니다.</div>
             }
 
-
+            <탭 />
         </div>
     )
 }
 
 export default Detail
+
+let 탭버튼 = styled.button`
+    border : none;
+    background : ${props => props.bgcolor};
+    padding : 10px;
+    border-radius : 10px;
+`
+
+function 탭() {
+    let 버튼명 = [{
+        name: '버튼1',
+        color: 'yellow'
+    }, {
+        name: '버튼2',
+        color: 'green'
+    }, {
+        name: '버튼3',
+        color: 'pink'
+    }]
+
+    let [탭노출여부, set탭노출여부] = useState(0)
+
+    // const 탭버튼클릭 = (index) => {
+    //     let updated탭노출여부 = 탭노출여부.map((_, i) => i === index);
+    //     set탭노출여부(updated탭노출여부)
+    // }
+
+    return (
+        <div style={{ marginTop: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                {버튼명.map(function (버튼, index) {
+                    return (
+                        <탭버튼 bgcolor={버튼.color} key={index} onClick={() => { set탭노출여부(index) }}>
+                            {버튼.name}
+                        </탭버튼>
+                    )
+                })}
+            </ div>
+
+            <탭상세정보 탭노출여부={탭노출여부} />
+
+        </div>
+    )
+}
+
+// props 대신 쓰는 방법
+function 탭상세정보({ 탭노출여부 }) {
+    return (
+        [<div style={{ border: '1px solid black', margin: '20px', height: '300px' }}>버튼1 탭입니다.</div>,
+        <div style={{ border: '1px solid black', margin: '20px', height: '300px' }}>버튼2 탭입니다.</div>,
+        <div style={{ border: '1px solid black', margin: '20px', height: '300px' }}>버튼3 탭입니다.</div>][탭노출여부]
+    )
+}
+
+function 신발구매정보(props) {
+    return (
+        <div className="row">
+            <div className="col-md-6">
+                <img src={'https://codingapple1.github.io/shop/shoes' + (props.num + 1) + '.jpg'} width="100%" />
+            </div>
+            <div className="col-md-6">
+                <h4 className="pt-5">{props.shoes[props.id].title}</h4>
+                <p>{props.shoes[props.id].content}</p>
+                <p>{props.shoes[props.id].price}</p>
+                <Order>
+                    <p>구매수량
+                        <input
+                            style={{ marginLeft: '10px' }}
+                            onChange={(e) => props.변한수량(e.target.value)}
+                        />
+                    </p>
+                    {/* onChange={숫자인지판별} */}
+                    {props.isnumber ? <숫자유효성검사 /> : null}
+                </Order>
+
+                <button className="btn btn-danger">주문하기</button>
+            </div>
+        </div>
+    )
+}
 
 function 숫자유효성검사() {
     return (
