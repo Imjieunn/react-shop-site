@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import '../App.css';
 
 let YellowBtn = styled.button`
     background: ${props => props.bg};
@@ -135,13 +136,35 @@ function 탭() {
     )
 }
 
+let 탭정보 = styled.div`
+    border : 1px solid black;
+    margin : 20px;
+    height : 300px;
+`
+
 // props 대신 쓰는 방법
 function 탭상세정보({ 탭노출여부 }) {
+    let [fade, setFade] = useState('')
+    // 탭노출여부 state가 변할 때 end 부착하는 방식 이용
+    useEffect(() => {
+        // end를 붙이는 시간을 조금 delay 시킴
+        setTimeout(() => { setFade('end') }, 100)
+        console.log("end 붙임")
+        return () => {
+            // useEffect 문보다 먼저 실행시킴
+            setFade('')
+            console.log("end 뗌")
+        }
+    }, [탭노출여부])
+
     return (
-        [<div style={{ border: '1px solid black', margin: '20px', height: '300px' }}>버튼1 탭입니다.</div>,
-        <div style={{ border: '1px solid black', margin: '20px', height: '300px' }}>버튼2 탭입니다.</div>,
-        <div style={{ border: '1px solid black', margin: '20px', height: '300px' }}>버튼3 탭입니다.</div>][탭노출여부]
+        <div className={`start ${fade}`}>
+            {[<탭정보>버튼1 탭입니다.</탭정보>,
+            <탭정보>버튼2 탭입니다.</탭정보>,
+            <탭정보>버튼3 탭입니다.</탭정보>][탭노출여부]}
+        </div>
     )
+
 }
 
 function 신발구매정보(props) {
