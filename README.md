@@ -15,3 +15,6 @@
 - useEffect내에 return 작성 가능 (useEffect 동작 전에 실행되도록)
 6. ajax 이용해서 서버와 통신
 - axios 이용 (GET/POST)
+7. 컴포넌트 애니메이션 적용
+- css 설정
+- 특정 시점(useEffect 이용!!)에 나타나도록 설정
