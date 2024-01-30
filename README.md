@@ -18,3 +18,7 @@
 7. 컴포넌트 애니메이션 적용
 - css 설정
 - 특정 시점(useEffect 이용!!)에 나타나도록 설정
+8. state 전역상태관리 (Context API, Redux)
+- Redux 초기세팅(Redux 공식문서 참고)
+- store.js : state 보관
+- store에 저장되어 있는 state들 다른 파일 컴포넌트에서 꺼내쓰기
