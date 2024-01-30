@@ -8,6 +8,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import 상품데이터 from './data'
 import { Routes, Route, Link, useNavigate, Outlet, useLocation } from 'react-router-dom'
 import Detail from './pages/Detail';
+import Cart from './pages/Cart';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -34,6 +35,7 @@ function App() {
           <Nav className="me-auto">
             <Link to="/" className='menu'>Home</Link>
             <Link to="/detail" className='menu'>Detail</Link>
+            <Link to="/cart" className='menu'>Cart</Link>
           </Nav>
           <OffCanvasExample placement={'end'} name={'세부메뉴'} />
         </Container>
@@ -42,6 +44,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage shoes={shoes} setShoes={setShoes} />} />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/event" element={<Event />}>
           <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>} />
           <Route path="two" element={<div>생일기념 쿠폰받기</div>} />
