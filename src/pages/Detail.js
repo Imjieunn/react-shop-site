@@ -125,7 +125,6 @@ function 탭() {
     //     let updated탭노출여부 = 탭노출여부.map((_, i) => i === index);
     //     set탭노출여부(updated탭노출여부)
     // }
-
     return (
         <div style={{ marginTop: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
@@ -137,7 +136,6 @@ function 탭() {
                     )
                 })}
             </ div>
-
             <탭상세정보 탭노출여부={탭노출여부} />
 
         </div>
