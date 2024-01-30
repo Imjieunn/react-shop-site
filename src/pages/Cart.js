@@ -17,12 +17,12 @@ function Cart() {
                     </tr>
                 </thead>
                 <tbody>
-                    {(store_state.id).map(function (value, index) {
+                    {(store_state.cart).map(function (value, index) {
                         return (
-                            <tr key={index}>
-                                <td>{store_state.id[value]}</td>
-                                <td>{store_state.상품명[value]}</td>
-                                <td>{store_state.담은갯수[value]}</td>
+                            < tr key={index} >
+                                <td>{value.id}</td>
+                                <td>{value.name}</td>
+                                <td>{value.count}</td>
                             </tr>
                         )
                     })}
@@ -33,7 +33,7 @@ function Cart() {
                         <td>{store_state.담은갯수[1]}</td>
                     </tr> */}
                 </tbody>
-            </Table>
+            </Table >
         </>
     )
 }

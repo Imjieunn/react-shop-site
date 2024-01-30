@@ -17,13 +17,22 @@ let id = createSlice({
     initialState: [0, 1]
 })
 
+let cart = createSlice({
+    name: 'cart',
+    initialState: [
+        { id: 0, name: 'White and Black', count: 2 },
+        { id: 2, name: 'Grey Yordan', count: 1 }
+    ]
+})
+
 
 export default configureStore({
     reducer: {
         // createSlice 한 것은 여기에 등록해야 사용가능
         // 이름(작명) : user.reducer
-        id: id.reducer,
-        상품명: 상품명.reducer,
-        담은갯수: 담은갯수.reducer
+        // id: id.reducer,
+        // 상품명: 상품명.reducer,
+        // 담은갯수: 담은갯수.reducer,
+        cart: cart.reducer
     }
 })
