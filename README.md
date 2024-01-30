@@ -22,3 +22,4 @@
 - Redux 초기세팅(Redux 공식문서 참고)
 - store.js : state 보관
 - store에 저장되어 있는 state들 다른 파일 컴포넌트에서 꺼내쓰기
+- redux의 state 변경
