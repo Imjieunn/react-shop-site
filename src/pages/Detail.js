@@ -33,6 +33,7 @@ function Detail(props) {
     let len = (props.shoes).length
     let num = (props.shoes).filter((value) => value.title == props.shoes[id].title)[0].id
     let [timer, setTimer] = useState(false)
+    let [loading, setLoading] = useState('')
 
     useEffect(() => {
         let a = setTimeout(() => { setTimer(true) }, 2000)
@@ -52,6 +53,13 @@ function Detail(props) {
         }
     }, [수량])
 
+    useEffect(() => {
+        setTimeout(() => { setLoading('end') }, 100)
+        return () => {
+            setLoading('')
+        }
+    }, [])
+
     // const 숫자인지판별 = (e) => {
     //     수량 = e.target.value
     //     if (isNaN(수량) === true) {
@@ -62,7 +70,7 @@ function Detail(props) {
     // }
 
     return (
-        <div className="container">
+        <div className={`container start ${loading}`}>
             {/* <YellowBtn bg="orange">버튼</YellowBtn>
             <YellowBtn bg="blue">버튼</YellowBtn> */}
 
