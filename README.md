@@ -23,3 +23,4 @@
 - store.js : state 보관
 - store에 저장되어 있는 state들 다른 파일 컴포넌트에서 꺼내쓰기
 - redux의 state 변경
+- redux 파일 분할
