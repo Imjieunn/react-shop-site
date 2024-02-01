@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import '../App.css';
+import { addCart } from '../store/cartSlice';
+import { useDispatch, useSelector } from "react-redux";
 
 let YellowBtn = styled.button`
     background: ${props => props.bg};
@@ -25,6 +27,8 @@ let Order = styled.div`
 `
 
 function Detail(props) {
+    let item = useSelector((state) => { return state })
+    let dispatch = useDispatch()
 
     let [count, setCount] = useState(0)
     let [수량, 변한수량] = useState("")
@@ -34,6 +38,10 @@ function Detail(props) {
     let num = (props.shoes).filter((value) => value.title == props.shoes[id].title)[0].id
     let [timer, setTimer] = useState(false)
     let [loading, setLoading] = useState('')
+
+    useEffect(() => {
+        console.log(item.cart)
+    }, [dispatch])
 
     useEffect(() => {
         let a = setTimeout(() => { setTimer(true) }, 2000)
@@ -89,7 +97,7 @@ function Detail(props) {
 
             {
                 id <= len ?
-                    <신발구매정보 shoes={props.shoes} num={num} id={id} 변한수량={변한수량} isnumber={isnumber} />
+                    <신발구매정보 shoes={props.shoes} num={num} id={id} 수량={수량} 변한수량={변한수량} isnumber={isnumber} dispatch={dispatch} item={item} />
                     : <div>해당 페이지는 존재하지 않습니다.</div>
             }
 
@@ -174,6 +182,19 @@ function 탭상세정보({ 탭노출여부 }) {
 }
 
 function 신발구매정보(props) {
+    const navigate = useNavigate()
+
+    const addItem = (id, name, count) => {
+        let items = { id: parseInt(id), name: name, count: parseInt(count) }
+        props.dispatch(addCart(items))
+
+        setTimeout(() => { console.log(props.item.cart) }, 200)
+
+        alert('정상 추가되었습니다!')
+        navigate('/cart')
+
+    }
+
     return (
         <div className="row">
             <div className="col-md-6">
@@ -194,7 +215,7 @@ function 신발구매정보(props) {
                     {props.isnumber ? <숫자유효성검사 /> : null}
                 </Order>
 
-                <button className="btn btn-danger">주문하기</button>
+                <button className="btn btn-danger" onClick={() => addItem(props.id, props.shoes[props.id].title, props.수량)}>주문하기</button>
             </div>
         </div>
     )
