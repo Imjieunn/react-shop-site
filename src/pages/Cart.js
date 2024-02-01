@@ -26,7 +26,6 @@ function Cart() {
                 </thead>
                 <tbody>
                     {(store_state.cart).map(function (value, index) {
-                        console.log(value)
                         return (
                             < tr key={index} >
                                 <td>{value.id}</td>
@@ -34,7 +33,7 @@ function Cart() {
                                 <td>{value.count}</td>
                                 <td>
                                     <button onClick={() => {
-                                        dispatch(increaseCount(index))
+                                        dispatch(increaseCount(store_state.cart[index].id))
                                     }}>+</button>
                                 </td>
                                 <td>
