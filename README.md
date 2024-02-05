@@ -24,3 +24,5 @@
 - store에 저장되어 있는 state들 다른 파일 컴포넌트에서 꺼내쓰기
 - redux의 state 변경
 - redux 파일 분할
+9. localStorage로 data 저장하기
+- 새로고침 시 state 데이터 리셋 현상 해결하기
