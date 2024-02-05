@@ -25,8 +25,12 @@ function App() {
   let [shoes, setShoes] = useState(상품데이터)
   const { pathname } = useLocation()
 
+  useEffect(() => {
+    localStorage.setItem('viewID', JSON.stringify([]))
+  }, [])
+
   return (
-    <div className="App">
+    <div className="App" style={{ position: 'relative' }}>
 
       <Navbar bg="dark" data-bs-theme="dark"
         className={pathname === "/" ? null : 'paddingNavbar'}>
@@ -114,6 +118,9 @@ function MainPage(props) {
         </div>
       </ButtonArea>
 
+      <최근본상품 />
+      <div style={{ height: '1000px' }}></div>
+
     </>
   )
 }
@@ -129,8 +136,20 @@ function Event() {
 
 function ShoeLists(props) {
   let navigate = useNavigate()
+
+  const saveShoeID = () => {
+    navigate('/detail/' + props.idx)
+
+    let view = JSON.parse(localStorage.getItem('viewID'))
+    let viewArray = Object.values(view)
+    viewArray.push(props.idx)
+    let viewSet = new Set(viewArray)
+    viewArray = Array.from(viewSet)
+    localStorage.setItem('viewID', JSON.stringify(viewArray))
+  }
+
   return (
-    <Col sm={4} onClick={() => { navigate('/detail/' + props.idx) }} style={{ cursor: "pointer" }}>
+    <Col sm={4} onClick={saveShoeID} style={{ cursor: "pointer" }}>
       <img src={'https://codingapple1.github.io/shop/shoes' + (props.shoesInfo.id + 1) + '.jpg'} width='80%' />
       <h4>{props.shoesInfo.title}</h4>
       <p>{props.shoesInfo.content}</p>
@@ -139,9 +158,74 @@ function ShoeLists(props) {
   )
 }
 
-function 더보기안내문() {
+let Watched = styled.div`
+  border : 1px solid black;
+  width : 200px;
+  height : 500px;
+  position : absolute;
+  top : 80px;
+`
+
+let Title = styled.div`
+  height : 8%;
+  font-weight : bold;
+  border : 1px solid black;
+  background-color : gray;
+  display : flex;
+  justify-content : center;
+  align-items : center;
+`
+
+let 상품갯수 = styled.div`
+  width : 20px;
+  height : 20px;
+  border-radius : 50%;
+  margin : 0 8px;
+  background-color : white;
+  display : flex;
+  justify-content : center;
+  align-items : center;
+`
+
+let WatchedList = styled.div`
+  height : 85%;
+  border : 1px solid black;
+  padding : 10px 0;
+  font-weight : bold;
+  display : flex;
+  flex-direction : column;
+  align-items : center;
+`
+
+let Item = styled.div`
+  border : 1px solid black;
+  width : 80%;
+  height : 35%;
+  margin: 5px 0;
+  padding : 20px;
+`
+
+let TopBtn = styled.button`
+  width : 100%;
+  height : 7%;
+  background-color : ligth-gray;
+`
+
+function 최근본상품() {
   return (
-    <div>로딩중입니다.</div>
+    <Watched>
+      <Title>
+        CART
+        <상품갯수>0</상품갯수>
+      </Title>
+      <WatchedList>
+        최근 본 상품
+        <Item />
+        <Item />
+        <Item />
+      </WatchedList>
+      <TopBtn>TOP</TopBtn>
+    </Watched>
   )
 }
 
