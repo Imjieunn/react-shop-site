@@ -30,7 +30,7 @@ function App() {
   }, [])
 
   return (
-    <div className="App" style={{ position: 'relative' }}>
+    <div className="App">
 
       <Navbar bg="dark" data-bs-theme="dark"
         className={pathname === "/" ? null : 'paddingNavbar'}>
@@ -89,7 +89,7 @@ function MainPage(props) {
   }
 
   return (
-    <>
+    <div>
       <div className='main-bg'></div>
       <Row style={{ display: 'inline-flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         {
@@ -118,10 +118,10 @@ function MainPage(props) {
         </div>
       </ButtonArea>
 
-      <최근본상품 />
+      <최근본상품 shoes={props.shoes} />
       <div style={{ height: '1000px' }}></div>
 
-    </>
+    </div>
   )
 }
 
@@ -159,11 +159,15 @@ function ShoeLists(props) {
 }
 
 let Watched = styled.div`
-  border : 1px solid black;
   width : 200px;
   height : 500px;
-  position : absolute;
-  top : 80px;
+  top : 100px;
+  position : fixed;
+  opacity : 0.5;
+  &:hover {
+    opacity : 1;
+    transition: 0.5s;
+  }
 `
 
 let Title = styled.div`
@@ -188,19 +192,28 @@ let 상품갯수 = styled.div`
 `
 
 let WatchedList = styled.div`
-  height : 85%;
+  min-height : 430px;
+  max-height : 430px;
+  overflow-y: auto;
   border : 1px solid black;
+  background : white;
   padding : 10px 0;
   font-weight : bold;
   display : flex;
   flex-direction : column;
   align-items : center;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 let Item = styled.div`
-  border : 1px solid black;
+  background-image : ${({ backgroundImgUrl }) => `url('https://codingapple1.github.io/shop/shoes${backgroundImgUrl}.jpg')`
+  };
+  background-size: cover; /* 이미지를 div에 맞춰서 resize */
+  background-position: center; /* 이미지를 가운데 정렬 */
   width : 80%;
-  height : 35%;
+  min-height : 150px;
   margin: 5px 0;
   padding : 20px;
 `
@@ -211,18 +224,37 @@ let TopBtn = styled.button`
   background-color : ligth-gray;
 `
 
-function 최근본상품() {
+function 최근본상품(props) {
+  let [watchedID, setWatchedID] = useState([])
+  let [watchedItem, setWatchedItem] = useState([])
+
+  useEffect(() => {
+    setWatchedID(JSON.parse(localStorage.getItem('viewID')))
+  }, [])
+
+  useEffect(() => {
+    for (let i = 0; i < (props.shoes).length; i++) {
+      if (watchedID.includes((props.shoes[i]).id)) {
+        setWatchedItem(prevWatchedItem => [...prevWatchedItem, props.shoes[i]]);
+      }
+    }
+  }, [watchedID])
+
   return (
     <Watched>
       <Title>
         CART
-        <상품갯수>0</상품갯수>
+        <상품갯수>{watchedItem.length}</상품갯수>
       </Title>
       <WatchedList>
         최근 본 상품
-        <Item />
-        <Item />
-        <Item />
+        {
+          watchedItem.map(function (item, idx) {
+            return (
+              < Item key={idx} backgroundImgUrl={(item.id) + 1} />
+            )
+          })
+        }
       </WatchedList>
       <TopBtn>TOP</TopBtn>
     </Watched>
