@@ -25,8 +25,12 @@ function App() {
   let [shoes, setShoes] = useState(상품데이터)
   const { pathname } = useLocation()
 
+  // 새로고침 시에 계속해서 viewID가 []로 리셋되는 것을 막기 위해
+  // 이미 localStorage에 watched 향목이 있으면 [] 이거 새로 넣지 말라고 코드 짜기
   useEffect(() => {
-    localStorage.setItem('viewID', JSON.stringify([]))
+    if (!(localStorage.getItem('viewID'))) {
+      localStorage.setItem('viewID', JSON.stringify([]))
+    }
   }, [])
 
   return (
