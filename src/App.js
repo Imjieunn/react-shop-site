@@ -4,13 +4,13 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Container, Nav, Navbar, Row, Col } from 'react-bootstrap'
 import { useEffect, useState } from 'react';
-import Offcanvas from 'react-bootstrap/Offcanvas';
 import 상품데이터 from './data'
 import { Routes, Route, Link, useNavigate, Outlet, useLocation } from 'react-router-dom'
 import Detail from './pages/Detail';
 import Cart from './pages/Cart';
 import axios from 'axios';
 import styled from 'styled-components';
+import { useQuery } from 'react-query'
 
 let ButtonArea = styled.div`
   display: flex;
@@ -33,8 +33,24 @@ function App() {
     }
   }, [])
 
+  let result = useQuery(['작명'], () =>
+    axios.get('https://codingapple1.github.io/userdata.json')
+      .then((a) => {
+        // 리액트 쿼리 장점2 : 틈만나면 자동으로 재요청해줌(refetch)
+        // 리액트 쿼리 잠점3 : ajax 실패 시 3-4번 자동 재시도함(retry)
+        console.log('요청됨')
+        return a.data
+      })
+  )
+
+
   return (
     <div className="App">
+
+      {/* 리액트 쿼리 장점 1 : ajax 요청 성공/실패/로딩중 상태를 쉽게 파악할 수 있다 */}
+      <div>{result.isLoading && '로딩중'}</div>
+      <div>{result.isError && '에러남'}</div>
+      <div>{result.data && result.data.name}</div>
 
       <Navbar bg="dark" data-bs-theme="dark"
         className={pathname === "/" ? null : 'paddingNavbar'}>
@@ -45,7 +61,6 @@ function App() {
             <Link to="/detail" className='menu'>Detail</Link>
             <Link to="/cart" className='menu'>Cart</Link>
           </Nav>
-          <OffCanvasExample placement={'end'} name={'세부메뉴'} />
         </Container>
       </Navbar>
 
@@ -253,44 +268,12 @@ function 최근본상품(props) {
       <WatchedList>
         최근 본 상품
         {
-          watchedItem.map(function (item, idx) {
-            return (
-              < Item key={idx} backgroundImgUrl={(item.id) + 1} />
-            )
-          })
+          watchedItem.map((item, idx) =>
+            < Item key={idx} backgroundImgUrl={(item.id) + 1} />
+          )
         }
       </WatchedList>
       <TopBtn>TOP</TopBtn>
     </Watched>
   )
-}
-
-function OffCanvasExample({ name, ...props }) {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  return (
-    <>
-      <Button style={{
-        background: '#CCCCCC',
-        color: 'black',
-        border: 'none'
-      }}
-        variant="primary" onClick={handleShow} className="me-2">
-        {name}
-      </Button>
-      <Offcanvas show={show} onHide={handleClose} {...props}>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Menu</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          <li>상의</li>
-          <li>하의</li>
-          <li>주얼리</li>
-        </Offcanvas.Body>
-      </Offcanvas>
-    </>
-  );
 }
